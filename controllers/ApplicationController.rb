@@ -22,4 +22,8 @@ class ApplicationController < Sinatra::Base
     title 'Not Found!'
     erb :not_found
   end
+
+  # enable session support for our application
+  enable :sessions
+
 end
