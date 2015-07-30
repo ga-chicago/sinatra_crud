@@ -10,8 +10,21 @@
   <body>
 
     <header>
-      <h4>Sinatra CRUD</h4>
+      <h4><a href='/'>Sinatra CRUD</a></h4>
     </header>
+
+    <nav>
+      <ul>
+        <li><a href='/'>Home</a></li>
+        <li><a href='/students'>Students</a></li>
+        <% if session[:user_name] %>
+        <li><a href='/users/logout'>Logout</a></li>
+        <% else %>
+        <li><a href='/users/login'>Login</a></li>
+        <li><a href='/users/register'>Register</a></li>
+        <% end %>
+      </ul>
+    </nav>
 
     <hr>
 

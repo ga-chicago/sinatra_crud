@@ -1,6 +1,25 @@
 class UsersController < ApplicationController
 
+  # does username exist?
+  def does_user_exist(username)
+    user = UsersModel.find_by(:user_name => username.to_s)
+    if user
+      return true
+    else
+      return false
+    end
+  end
+
+  # registration
+  get '/register' do
+    erb :users_register
+  end
+
   post "/register" do
+
+    if self.does_user_exist(params[:user_name]) == true
+      erb :users_already_exists
+    end
 
     # generate a salt and hash to use
     password_salt = BCrypt::Engine.generate_salt
@@ -12,18 +31,33 @@ class UsersController < ApplicationController
     new_user.password_salt = password_salt
     new_user.password_hash = password_hash
     new_user.is_admin = false
+    new_user.save
 
     session[:user_name] = new_user.user_name
 
-    redirect "/"
+    erb :users_register_confirmation
 
   end
 
+  #login
+  get '/login' do
+    erb :users_login
+  end
+
   post "/login" do
-    if userTable.has_key?(params[:username])
-      user = userTable[params[:username]]
-      if user[:passwordhash] == BCrypt::Engine.hash_secret(params[:password], user[:salt])
-        session[:username] = params[:username]
+    puts '...'
+    puts '...'
+    puts '...'
+    puts '...'
+    puts self.does_user_exist(params[:user_name])
+    puts '...'
+    puts '...'
+    puts '...'
+    puts '...'
+    if self.does_user_exist(params[:user_name]) == true
+      user = UsersModel.where(:user_name => params[:user_name]).first!
+      if user.password_hash == BCrypt::Engine.hash_secret(params[:password], user.password_salt)
+        session[:user_name] = user.user_name
         redirect "/"
       end
     end
@@ -31,7 +65,7 @@ class UsersController < ApplicationController
   end
 
   get "/logout" do
-    session[:username] = nil
+    session[:user_name] = nil
     redirect "/"
   end
 

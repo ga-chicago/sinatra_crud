@@ -19,7 +19,6 @@ class ApplicationController < Sinatra::Base
 
   # will be used to display 404 error pages
   not_found do
-    title 'Not Found!'
     erb :not_found
   end
 
