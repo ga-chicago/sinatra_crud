@@ -1,10 +1,7 @@
 class HomeController < ApplicationController
 
-  # GET: localhost/
   get '/' do
-
-    erb :index
-
+    {:name => 'test'}.to_json
   end
 
 end

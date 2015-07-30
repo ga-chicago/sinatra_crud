@@ -1,0 +1,39 @@
+<h1>Students List</h1>
+
+<li><a href='/students/create'>Create Student</a></li>
+
+<table>
+  <thead>
+    <th>
+      ID
+    </th>
+    <th>
+      Name
+    </th>
+    <th>
+      Email
+    </th>
+    <th>
+      Edit?
+    </th>
+  </thead>
+
+  <tbody>
+    <% @students.each do |student| %>
+      <tr>
+        <td>
+          <%= student.id %>
+        </td>
+        <td>
+          <%= student.name %>
+        </td>
+        <td>
+          <%= student.email %>
+        </td>
+        <td>
+          <a href='/students/edit/<%= student.id %>'>Edit</a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

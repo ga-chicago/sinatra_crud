@@ -1,22 +1,25 @@
-# app.rb got promoted! yay :)
 class ApplicationController < Sinatra::Base
 
-  # bundler
   require 'bundler'
   Bundler.require()
 
-  # connect to db
+  # connect to DB using ActiveRecord
   ActiveRecord::Base.establish_connection(
-    :adapter => 'postgresql',
-    :database => 'vader'
+    :adapter  => "postgresql",
+    :database => "vader"
   )
 
-  # include/set all ERB files in /views
+  # set folder for templates to ../views, but make the path absolute
   set :views, File.expand_path('../../views', __FILE__)
 
-  # 404 errors
-  not_found do
-    erb :not_found
+  # don't enable logging when running tests
+  configure :production, :development do
+    enable :logging
   end
 
+  # will be used to display 404 error pages
+  not_found do
+    title 'Not Found!'
+    erb :not_found
+  end
 end
