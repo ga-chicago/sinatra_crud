@@ -4,4 +4,8 @@ class HomeController < ApplicationController
     erb :index
   end
 
+  get '/not_authenticated' do
+    erb :not_authenticated
+  end
+
 end

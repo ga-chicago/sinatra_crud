@@ -33,7 +33,7 @@ class UsersController < ApplicationController
     new_user.is_admin = false
     new_user.save
 
-    session[:user_name] = new_user.user_name
+    session[:current_user] = user
 
     erb :users_register_confirmation
 
@@ -45,19 +45,10 @@ class UsersController < ApplicationController
   end
 
   post "/login" do
-    puts '...'
-    puts '...'
-    puts '...'
-    puts '...'
-    puts self.does_user_exist(params[:user_name])
-    puts '...'
-    puts '...'
-    puts '...'
-    puts '...'
     if self.does_user_exist(params[:user_name]) == true
       user = UsersModel.where(:user_name => params[:user_name]).first!
       if user.password_hash == BCrypt::Engine.hash_secret(params[:password], user.password_salt)
-        session[:user_name] = user.user_name
+        session[:current_user] = user
         redirect "/"
       end
     end
@@ -65,7 +56,7 @@ class UsersController < ApplicationController
   end
 
   get "/logout" do
-    session[:user_name] = nil
+    session[:current_user] = nil
     redirect "/"
   end
 
